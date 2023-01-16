@@ -1,0 +1,20 @@
+create trigger update_salary
+after insert on employee
+for each row
+begin
+	if new.dno is not null then
+	set totalsalary = totalsalary + new.salary
+	where dnumber = new.dno;
+	end if;
+end //
+
+create function giveRaise(oldval double, amount double)
+returns double
+deterministic
+begin
+	declare newval double;
+	set newval = oldval * (1+amount);
+	return newval;
+end //
+call - select <colNames>, giveRaise(salary, 0.1) as newsal
+from employee;
